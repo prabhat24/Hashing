@@ -1,0 +1,55 @@
+
+from sortedcontainers import SortedDict, SortedList
+ 
+# using sorted Dict
+def longest_piece(arr):
+	N = len(arr)
+	i = 0
+	j = 0
+	od = SortedDict()
+	maxa =  arr[0]
+	mina =  arr[0]
+	size = 0
+	ans = 0
+	for i in range(0, N):
+		od[arr[i]] = od[arr[i]]+1 if od.get(arr[i], None) else 1
+		size += 1
+		maxa = max(maxa, arr[i])
+		mina = min(mina, arr[i])
+
+		while maxa - mina > 1:
+			od[arr[j]] = od[arr[j]] - 1
+			size -= 1
+			if od[arr[j]] == 0:
+				del od[arr[j]]
+				maxa = od.keys()[-1]
+				mina = od.keys()[0]
+			j += 1
+		ans = max(ans, size)
+	return ans
+
+# using sorted list
+def longest_piece(arr):
+	N = len(arr)
+	i = 0
+	j = 0
+	od = SortedList()
+	maxa =  arr[0]
+	mina =  arr[0]
+	ans = 0
+	for i in range(0, N):
+		od.add(arr[i])
+		while od[-1] - od[0] > 1:
+			od.remove(arr[j])
+			j += 1
+		ans = max(ans, len(od))
+	return ans
+
+
+if __name__ == '__main__':
+	arr = [5, 4, 5, 5, 6, 7, 8, 8, 8, 7, 6]
+	print(longest_piece(arr))
+
+
+
+
